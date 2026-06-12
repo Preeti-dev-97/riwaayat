@@ -1,6 +1,6 @@
 <?php
 session_start();
-$conn = new mysqli("localhost", "root", "1234", "riwaayat");
+require_once 'db.php';
 
 $total = 0;
 ?>

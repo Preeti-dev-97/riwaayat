@@ -1,9 +1,22 @@
 <?php
+
 session_start();
+
+require 'vendor/autoload.php';
 require_once 'db.php';
 
-$sql = "SELECT * FROM products where product_type_id = 3";
-$result = $conn->query($sql);
+$conn = new mysqli("localhost","root","1234","riwaayat");
+
+$order_id = (int)$_GET['order_id'];
+
+$conn->query("
+UPDATE orders
+SET payment_status='paid'
+WHERE id=$order_id
+");
+
+unset($_SESSION['cart']);
+
 ?>
 
 <!DOCTYPE html>
@@ -21,7 +34,7 @@ $result = $conn->query($sql);
 <nav class="navbar">
     <p class="logo"><img src="imagesmp\imglogo.png" height="70" width="70"></p>
     <ul class="nav-links">
-        <li><a href="index.php">Home</a></li>
+        <li><a href="#home">Home</a></li>
 
         <li class="dropdown">
             <a href="#">Products ▾</a>
@@ -37,33 +50,28 @@ $result = $conn->query($sql);
         <li><a href="contact.php">Contact Us</a></li>
     </ul>
 
-  <a href="cart.php" class="cart-btn">
+    <a href="cart.php" class="cart-btn">
         🛒(<span id="cart-count">0</span>)
     </a>
 
 </nav>
 
-<!-- Accessories Section -->
-<section class="accessories-page">
-    <h2>Our Accessories</h2>
+<div class="order-page">
 
-    <div class="acc-container">
+    <div class="order-box">
 
-        <?php while($row = $result->fetch_assoc()) { ?>
+        <h1>✅ Order Placed Successfully!</h1>
 
-            <div class="acc-card">
-                <div class="img-box">
-                    <img src="imagesmp/<?php echo $row['image']; ?>">
-                </div>
-                <h3><?php echo $row['name']; ?></h3>
-                <a href="product_details.php?id=<?php echo $row['id']; ?>">
-                <button>View Details</button></a>
-            </div>
+        <p>Your order has been placed.</p>
 
-        <?php } ?>
+        <div class="order-buttons">
+            <a href="index.php" class="btn">Continue Shopping</a>
+            <a href="cart.php" class="btn secondary">View Cart</a>
+        </div>
 
     </div>
-</section>
+
+</div>
 
 <!-- Footer -->
 <footer class="footer">
@@ -76,7 +84,7 @@ $result = $conn->query($sql);
         <div class="footer-box">
             <h3>Quick Links</h3>
             <a href="index.php">Home</a>
-            <a href="accessories.php">Products</a>
+            <a href="lehenga.php">Products</a>
             <a href="about.php">About</a>
             <a href="contact.php">Contact</a>
         </div>
@@ -101,7 +109,7 @@ $result = $conn->query($sql);
         <p>© 2026 Riwaayat ❤️ | All Rights Reserved</p>
     </div>
 </footer>
-<script src="script.js"></script>
 
+<script src="script.js"></script>
 </body>
 </html>

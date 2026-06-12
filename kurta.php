@@ -1,11 +1,7 @@
 <?php
 session_start();
 
-$conn = new mysqli("localhost", "root", "1234", "riwaayat");
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+require_once 'db.php';
 
 $sql = "SELECT * FROM products where product_type_id = 2";
 $result = $conn->query($sql);
